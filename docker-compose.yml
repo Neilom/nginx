@@ -1,0 +1,39 @@
+version: '3.7'
+services:
+  nginx: 
+    image: nginx:1.21
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      # Aqui está sendo enviado o html que está na máquina para o NGINX
+      - ./html:/usr/share/nginx/html:ro
+      #Aqui são transmitidos as configs do NGINX para dentro do DOCKER
+      - ./nginx:/etc/nginx
+      #Aqui envia o certificado ssl para dentro do servidor
+      #- ./cert:/cert
+    networks:
+        - frontend
+  nginx2: 
+    image: nginx:1.21
+    ports:
+      - "81:80"
+    volumes:
+      # Aqui está sendo enviado o html que está na máquina para o NGINX
+      - ./html1:/usr/share/nginx/html:ro
+    networks:
+      - frontend
+  nginx3: 
+    image: nginx:1.21
+    ports:
+      - "82:80"
+    volumes:
+      # Aqui está sendo enviado o html que está na máquina para o NGINX
+      - ./htmlBKCUO:/usr/share/nginx/html:ro
+    networks:
+      - frontend
+
+networks:
+  frontend:
+    # Use a custom driver
+    driver: bridge
